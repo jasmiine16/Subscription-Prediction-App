@@ -4,8 +4,29 @@ import numpy as np
 import pickle
 
 # Load the trained model
-with open("subscription_model.pkl", "rb") as f:
-    model = pickle.load(f)
+'''with open("subscription_model.pkl", "rb") as f:
+      model = pickle.load(f)'''
+
+# Load the trained model with error handling
+st.subheader("🔍 Loading Model")
+
+try:
+    with open("subscription_model.pkl", "rb") as f:
+        model = pickle.load(f)
+    st.success("Model loaded successfully!")
+except FileNotFoundError:
+    st.error("❌ Model file not found. Please make sure 'subscription_model.pkl' is uploaded to Streamlit Cloud.")
+    st.stop()
+except ModuleNotFoundError as e:
+    st.error(f"❌ Missing module while loading model: {e}. Ensure all required packages are listed in requirements.txt.")
+    st.stop()
+except Exception as e:
+    st.error(f"❌ Unexpected error while loading model: {e}")
+    st.stop()
+
+
+
+
 
 st.title("🛍️ Subscription Prediction App")
 st.write("Fill in the customer details to predict if they will subscribe.")
